@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+for file in "$@"; do
+    xmllint --format "$file" --output "$file"
+done

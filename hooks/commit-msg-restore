@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG_BACKUP_FILE="$(git rev-parse --git-path COMMIT_EDITMSG.bak)"
+
+if [ "$GIT_EDITOR" = ":" ]; then
+    # commit message supplied via '-m' switch: backup file is redundant
+    rm -f "$COMMIT_MSG_BACKUP_FILE"
+else
+    # commit message supplied via file: restore backup if present
+    if [ -e "$COMMIT_MSG_BACKUP_FILE" ]; then
+        cp -p "$COMMIT_MSG_BACKUP_FILE" "$COMMIT_MSG_FILE"
+    fi
+fi

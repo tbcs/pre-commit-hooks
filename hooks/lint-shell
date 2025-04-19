@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec shellcheck --check-sourced --severity=style --format=tty -- "$@"

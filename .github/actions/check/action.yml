@@ -1,0 +1,16 @@
+name: Run checks
+description: >-
+  Runs validations and linters.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Type check code with mypy
+      shell: bash
+      run: |
+        uv run mypy .
+
+    - name: Validate code with linters
+      shell: bash
+      run: |
+        uv run ruff check

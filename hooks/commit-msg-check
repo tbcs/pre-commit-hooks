@@ -1,0 +1,96 @@
+#!/usr/bin/env node
+/* eslint-disable import/no-absolute-path */
+'use strict'
+
+/**
+ * This script wraps the commitlint CLI for use with pre-commit.  It creates a backup of the commit
+ * message, which can be used by another pre-commit hook in stage `prepare-commit-msg` to present
+ * the user the previously failed commit message for editing.  The backup file is removed if linting
+ * passes.
+ *
+ * The script expects the file containing the commit message to be passed as its last argument.  The
+ * commitlint options --edit, --env, --from and --to cannot be used with this script.  All other
+ * options are passed to commitlint.
+ */
+
+const { spawnSync } = require('node:child_process')
+const fs = require('node:fs')
+const path = require('node:path')
+const commitlintCliCmd = require('@commitlint/cli')
+
+const incompatibleOpts = ['-e', '--edit', '-E', '--env', '-f', '--from', '-t', '--to']
+
+const scriptName = process.argv[1]
+
+async function main (args) {
+  if (args.length < 1) {
+    console.error(`Usage: ${scriptName} [commitlint-options] <commit-msg-file>`)
+    process.exit(100)
+  }
+  const commitMsgPath = args.pop()
+
+  for (const opt of incompatibleOpts) {
+    if (args.includes(opt)) {
+      console.error(`ERROR: commitlint option '${opt}' must not be used`)
+      process.exit(100)
+    }
+  }
+
+  const commitMsgBackupPath = await resolveCommitMsgBackupPath()
+  backupCommitMsgFile(commitMsgPath, commitMsgBackupPath)
+
+  runCommitLint(args, commitMsgPath)
+
+  // linting successful, commit message passed
+
+  removeCommitMsgBackupFile(commitMsgBackupPath)
+}
+
+function backupCommitMsgFile (commitMsgPath, commitMsgBackupPath) {
+  fs.copyFileSync(commitMsgPath, commitMsgBackupPath)
+}
+
+function removeCommitMsgBackupFile (commitMsgBackupPath) {
+  try {
+    fs.unlinkSync(commitMsgBackupPath)
+  } catch (error) {
+    // ignore absent backup file, report all other errors
+    if (error.code !== 'ENOENT') {
+      throw (error)
+    }
+  }
+}
+
+/** Invokes commitlint, passing all arguments, handling errors transparently. */
+function runCommitLint (args, commitMsgPath) {
+  // In some cases commitlint falls back to checking '.git./COMMIT_EDITMSG'.  We avoid relying on
+  // this implicit behavior by passing the commit message file's path via an environment variable.
+  const procArgs = [...args, '--env', 'COMMITLINT_COMMIT_MSG_FILE']
+  const procEnv = { ...process.env, COMMITLINT_COMMIT_MSG_FILE: commitMsgPath }
+
+  const proc = spawnSync(commitlintCliCmd, procArgs, { stdio: 'inherit', env: procEnv })
+  if (proc.error != null) {
+    throw (proc.error)
+  }
+  if (proc.status != null && proc.status > 0) {
+    process.exit(proc.status)
+  }
+}
+
+/**
+ * Determines the path of the git commit message backup file.
+ *
+ * @return {string} The path to the commit message backup file (compatible with git worktree).
+ */
+async function resolveCommitMsgBackupPath () {
+  // this import has to be compatible with ES Modules, therefore we specify the full path here
+  const getEditFilePathModulePath = process.env.NODE_PATH +
+    '/@commitlint/read/lib/get-edit-file-path.js'
+  const getEditFilePath = (await import(getEditFilePathModulePath)).getEditFilePath
+
+  // (ab)use logic of getEditFilePath to determine the git directory
+  const gitDir = path.dirname(await getEditFilePath('.'))
+  return path.join(gitDir, 'COMMIT_EDITMSG.bak')
+}
+
+main(process.argv.slice(2))

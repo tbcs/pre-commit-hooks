@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec shfmt -i 2 -bn -ci -sr -fn -w -- "$@"

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# prettier plugins have to be specified by their full path, see:
+# https://github.com/prettier/plugin-php/issues/2215
+exec prettier --plugin='/usr/local/lib/node_modules/@prettier/plugin-php/src/index.mjs' --write --no-config -- "$@"

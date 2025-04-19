@@ -9,6 +9,7 @@
     ":renovatePrefix"
   ],
   "automerge": false,
+  "baseBranches": ["main"],
   "lockFileMaintenance": {
     "enabled": true
   },

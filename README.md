@@ -40,7 +40,7 @@ Example `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/tbcs/pre-commit-hooks
-    rev: "20250419105857.29bc9a8d"
+    rev: "20250419111018.e97352d0"
     hooks:
       - id: style-java
       - id: commit-msg-restore

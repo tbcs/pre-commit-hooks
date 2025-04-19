@@ -6,56 +6,56 @@
   name: Check/fix Java style (google-java-format)
   types_or: [java]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-java"]
 
 - id: style-json
   name: Check/fix JSON style (prettier)
   types_or: [json]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-json"]
 
 - id: style-kotlin
   name: Check/fix Kotlin style (ktfmt)
   types_or: [kotlin]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-kotlin"]
 
 - id: style-markdown
   name: Check/fix Markdown style (prettier)
   types_or: [markdown]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-markdown"]
 
 - id: style-php
   name: Check/fix PHP style (prettier)
   types_or: [php]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-php"]
 
 - id: style-shell
   name: Check/fix shell style (shfmt)
   types_or: [shell]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-shell"]
 
 - id: style-xml
   name: Check/fix XML style (xmllint)
   types_or: [xml]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-xml"]
 
 - id: style-yaml
   name: Check/fix YAML style (prettier)
   types_or: [yaml]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/style-yaml"]
 
 # ------------------------------------------------------------------------------
@@ -66,7 +66,7 @@
   name: Check shell scripts for problems (shellcheck)
   types_or: [shell]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/lint-shell"]
 
 - id: lint-makefile-suspicious-continuations
@@ -89,7 +89,7 @@
   name: Check commit message (commitlint)
   stages: [commit-msg]
   language: docker_image
-  entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   args: ["/hooks/commit-msg-check"]
 
 - id: commit-msg-restore
@@ -102,5 +102,5 @@
   language: script
   entry: ./hooks/commit-msg-restore
   # language: docker_image
-  # entry: tibi/pre-commit-hooks:20250419105857.29bc9a8d
+  # entry: tibi/pre-commit-hooks:20250419111018.e97352d0
   # args: ["/hooks/commit-msg-restore"]

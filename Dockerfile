@@ -32,8 +32,8 @@ RUN chmod 644 /tmp/google-java-format.jar
 
 FROM jdk-builder AS ktfmt
 
-ARG ktfmt_version=0.54  # https://github.com/facebook/ktfmt/releases/
-ARG ktfmt_sha256sum=5e7eb28a0b2006d1cefbc9213bfc73a8191ec2f85d639ec4fc4ec0cd04212e82
+ARG ktfmt_version=0.57  # https://github.com/facebook/ktfmt/releases/
+ARG ktfmt_sha256sum=5e4ce3b5da3012e3653325fac428f895e6a4fbdfe1657122f7b7f935daa3d1f6
 
 # Note on native image for ktfmt:
 #
@@ -47,7 +47,7 @@ ARG ktfmt_sha256sum=5e7eb28a0b2006d1cefbc9213bfc73a8191ec2f85d639ec4fc4ec0cd0421
 #     https://github.com/oracle/graal/issues/2824#issuecomment-685159371
 
 ADD --checksum=sha256:${ktfmt_sha256sum} \
-    https://repo1.maven.org/maven2/com/facebook/ktfmt/${ktfmt_version}/ktfmt-${ktfmt_version}-jar-with-dependencies.jar \
+    https://repo1.maven.org/maven2/com/facebook/ktfmt/${ktfmt_version}/ktfmt-${ktfmt_version}-with-dependencies.jar \
     /tmp/ktfmt.jar
 RUN chmod 644 /tmp/ktfmt.jar
 

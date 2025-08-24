@@ -86,19 +86,22 @@ COPY --from=ktfmt /tmp/ktfmt.jar /usr/local/lib/ktfmt.jar
 # install code formatter 'prettier'
 RUN npm install --global --omit=dev \
     prettier@${prettier_version} \
-    && npm cache clean --force
+    && npm cache clean --force \
+    && rm -rf /tmp/*
 
 # install PHP code formatter plugin for prettier
 RUN npm install --global --omit=dev \
     @prettier/plugin-php@${prettierphp_version} \
-    && npm cache clean --force
+    && npm cache clean --force \
+    && rm -rf /tmp/*
 
 # install commitlint
 RUN npm install --global --omit=dev \
     @commitlint/cli@${commitlint_version} \
     @commitlint/read@${commitlint_version} \
     @commitlint/config-conventional@${commitlint_config_version} \
-    && npm cache clean --force
+    && npm cache clean --force \
+    && rm -rf /tmp/*
 
 COPY hooks/ /hooks
 

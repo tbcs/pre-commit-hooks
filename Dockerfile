@@ -4,7 +4,7 @@
 # intermediate images
 # ==============================================================================
 
-FROM library/eclipse-temurin:21.0.6_7-jdk-alpine AS jdk-builder
+FROM library/eclipse-temurin:21.0.11_10-jdk-alpine AS jdk-builder
 
 RUN apk add git maven
 
@@ -58,7 +58,7 @@ RUN chmod 644 /tmp/ktfmt.jar
 # final image
 # ==============================================================================
 
-FROM library/eclipse-temurin:21.0.6_7-jdk-alpine
+FROM library/eclipse-temurin:21.0.11_10-jdk-alpine
 
 ARG commitlint_version=19.8.1  # https://github.com/conventional-changelog/commitlint/releases
 ARG commitlint_config_version=19.8.1  # https://www.npmjs.com/package/@commitlint/config-conventional

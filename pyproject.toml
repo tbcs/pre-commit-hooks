@@ -5,7 +5,7 @@ requires-python = "==3.12.*"
 
 [dependency-groups]
 dev = [
-  "mypy>=1.15.0",
+  "mypy>=2.0.0",
   "ruff>=0.11.6",
   "ipython>=9.1.0",
   "pre-commit>=4.2.0",

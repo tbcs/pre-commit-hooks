@@ -44,7 +44,10 @@ ARG ktfmt_sha256sum=5e4ce3b5da3012e3653325fac428f895e6a4fbdfe1657122f7b7f935daa3
 #     tried and failed:
 #
 #     https://github.com/facebook/ktfmt/issues/44
+#     https://github.com/facebook/ktfmt/issues/441
 #     https://github.com/oracle/graal/issues/2824#issuecomment-685159371
+#
+#     This PR is promising: https://github.com/facebook/ktfmt/pull/584
 
 ADD --checksum=sha256:${ktfmt_sha256sum} \
     https://repo1.maven.org/maven2/com/facebook/ktfmt/${ktfmt_version}/ktfmt-${ktfmt_version}-with-dependencies.jar \

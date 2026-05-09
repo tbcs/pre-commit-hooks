@@ -5,13 +5,13 @@ requires-python = "==3.12.*"
 
 [dependency-groups]
 dev = [
-  "mypy>=1.15.0",
-  "ruff>=0.11.6",
-  "ipython>=9.1.0",
+  "mypy>=2.0.0",
+  "ruff>=0.15.12",
+  "ipython>=9.13.0",
   "pre-commit>=4.2.0",
-  "gitpython>=3.1.44",
-  "pytest>=8.3.5",
-  "pytest-xdist>=3.6.1",
+  "gitpython>=3.1.50",
+  "pytest>=9.0.3",
+  "pytest-xdist>=3.8.0",
 ]
 
 [tool.ruff]

@@ -4,7 +4,7 @@
 # intermediate images
 # ==============================================================================
 
-FROM library/eclipse-temurin:21-jdk-alpine AS jdk-builder
+FROM library/eclipse-temurin:21.0.6_7-jdk-alpine AS jdk-builder
 
 RUN apk add git maven
 
@@ -12,8 +12,8 @@ RUN apk add git maven
 
 FROM jdk-builder AS googlejavaformat
 
-ARG googlejavaformat_version=1.26.0  # https://github.com/google/google-java-format/releases/
-ARG googlejavaformat_sha256sum=02a361357297fa962918c1d08830d50b17d62984d2a8649159b95b9a6d9f82b2
+ARG googlejavaformat_version=1.35.0  # https://github.com/google/google-java-format/releases/
+ARG googlejavaformat_sha256sum=bfb7f9ead6cd328389bc2da53860443bc0e805dfd08cc889bfdf43b26cb2a6e8
 
 # Note on native image for google-java-format:
 #
@@ -32,8 +32,8 @@ RUN chmod 644 /tmp/google-java-format.jar
 
 FROM jdk-builder AS ktfmt
 
-ARG ktfmt_version=0.54  # https://github.com/facebook/ktfmt/releases/
-ARG ktfmt_sha256sum=5e7eb28a0b2006d1cefbc9213bfc73a8191ec2f85d639ec4fc4ec0cd04212e82
+ARG ktfmt_version=0.62  # https://github.com/facebook/ktfmt/releases/
+ARG ktfmt_sha256sum=f39bf9a1f520d27f86f2bdf4d6dbb2574c05e84f656171ed65c4e534b86b9965
 
 # Note on native image for ktfmt:
 #
@@ -44,10 +44,13 @@ ARG ktfmt_sha256sum=5e7eb28a0b2006d1cefbc9213bfc73a8191ec2f85d639ec4fc4ec0cd0421
 #     tried and failed:
 #
 #     https://github.com/facebook/ktfmt/issues/44
+#     https://github.com/facebook/ktfmt/issues/441
 #     https://github.com/oracle/graal/issues/2824#issuecomment-685159371
+#
+#     This PR is promising: https://github.com/facebook/ktfmt/pull/584
 
 ADD --checksum=sha256:${ktfmt_sha256sum} \
-    https://repo1.maven.org/maven2/com/facebook/ktfmt/${ktfmt_version}/ktfmt-${ktfmt_version}-jar-with-dependencies.jar \
+    https://github.com/facebook/ktfmt/releases/download/v${ktfmt_version}/ktfmt-${ktfmt_version}-with-dependencies.jar \
     /tmp/ktfmt.jar
 RUN chmod 644 /tmp/ktfmt.jar
 
@@ -55,12 +58,12 @@ RUN chmod 644 /tmp/ktfmt.jar
 # final image
 # ==============================================================================
 
-FROM library/eclipse-temurin:21-jdk-alpine
+FROM library/eclipse-temurin:21.0.6_7-jdk-alpine
 
-ARG commitlint_version=19.8.0  # https://github.com/conventional-changelog/commitlint/releases
-ARG commitlint_config_version=19.8.0  # https://www.npmjs.com/package/@commitlint/config-conventional
-ARG prettier_version=3.5.3  # https://github.com/prettier/prettier/releases
-ARG prettierphp_version=0.22.4  # https://github.com/prettier/plugin-php/releases
+ARG commitlint_version=19.8.1  # https://github.com/conventional-changelog/commitlint/releases
+ARG commitlint_config_version=19.8.1  # https://www.npmjs.com/package/@commitlint/config-conventional
+ARG prettier_version=3.6.2  # https://github.com/prettier/prettier/releases
+ARG prettierphp_version=0.24.0  # https://github.com/prettier/plugin-php/releases
 
 # install base dependencies
 RUN apk --no-cache add bash git
@@ -86,19 +89,22 @@ COPY --from=ktfmt /tmp/ktfmt.jar /usr/local/lib/ktfmt.jar
 # install code formatter 'prettier'
 RUN npm install --global --omit=dev \
     prettier@${prettier_version} \
-    && npm cache clean --force
+    && npm cache clean --force \
+    && rm -rf /tmp/*
 
 # install PHP code formatter plugin for prettier
 RUN npm install --global --omit=dev \
     @prettier/plugin-php@${prettierphp_version} \
-    && npm cache clean --force
+    && npm cache clean --force \
+    && rm -rf /tmp/*
 
 # install commitlint
 RUN npm install --global --omit=dev \
     @commitlint/cli@${commitlint_version} \
     @commitlint/read@${commitlint_version} \
     @commitlint/config-conventional@${commitlint_config_version} \
-    && npm cache clean --force
+    && npm cache clean --force \
+    && rm -rf /tmp/*
 
 COPY hooks/ /hooks
 

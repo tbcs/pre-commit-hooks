@@ -46,7 +46,7 @@ jobs:
           git add .pre-commit-hooks.yaml README.md
 
       - name: Update release branch
-        uses: tbcs/update-release-branch@20250419100821.765aef89
+        uses: tbcs/update-release-branch@20260509210007.10f287b4
         with:
           version: "${{ steps.set-version.outputs.version }}"
 

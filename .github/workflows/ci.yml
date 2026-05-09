@@ -17,7 +17,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Initialize build environment
         uses: ./.github/actions/init-build
@@ -32,7 +32,7 @@ jobs:
           docker-hub-pass: "${{ secrets.DOCKER_HUB_PASS }}"
 
       - name: Build Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         env:
           DOCKER_BUILD_RECORD_UPLOAD: false
         with:
@@ -51,7 +51,7 @@ jobs:
           uv run pytest -vv --full-trace --showlocals -n auto
 
       - name: Check Docker image efficiency
-        uses: MaxymVlasov/dive-action@b08c8287e603d028c986d7044e83fa76bcca6a65 # v1.5.0
+        uses: MaxymVlasov/dive-action@726042660e3c8f7263350e14b202cc35d671db20 # v2.0.0
         with:
           config-file: "${{ github.workspace }}/.dive.yaml"
           github-token: ${{ github.token }}
@@ -59,7 +59,7 @@ jobs:
 
       - name: Publish Docker image
         if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         env:
           DOCKER_BUILD_RECORD_UPLOAD: false
         with:

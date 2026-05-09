@@ -12,8 +12,8 @@ RUN apk add git maven
 
 FROM jdk-builder AS googlejavaformat
 
-ARG googlejavaformat_version=1.28.0  # https://github.com/google/google-java-format/releases/
-ARG googlejavaformat_sha256sum=32342e7c1b4600f80df3471da46aee8012d3e1445d5ea1be1fb71289b07cc735
+ARG googlejavaformat_version=1.35.0  # https://github.com/google/google-java-format/releases/
+ARG googlejavaformat_sha256sum=bfb7f9ead6cd328389bc2da53860443bc0e805dfd08cc889bfdf43b26cb2a6e8
 
 # Note on native image for google-java-format:
 #
